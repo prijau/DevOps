@@ -1,42 +1,35 @@
 pipeline {
     agent any
+
     stages {
         stage('Build') {
             steps {
-                echo 'Building...'
-                // Compile or install code
+                echo 'Compiling Java File...'
+                bat 'javac Program.java'
             }
         }
+
         stage('Test') {
             steps {
-                echo 'Testing...'
-                // Run test cases
+                echo 'Testing HelloWorld class...'
+                bat 'java Program | grep "Hello, World!"'
             }
         }
-        stage('Deploy to Staging') {
+
+        stage('Deploy') {
             steps {
-                echo 'Deploying to Staging...'
-                // Deploy script
-            }
-        }
-        stage('Approval') {
-            steps {
-                input "Approve deployment to Production?"
-            }
-        }
-        stage('Deploy to Production') {
-            steps {
-                echo 'Deploying to Production...'
-                // Final deploy script
+                echo 'Deploying HelloWorld.java to deploy folder...'
+                bat 'mkdir -p deploy && cp HelloWorld.class deploy/'
             }
         }
     }
+
     post {
-        failure {
-            echo 'Pipeline failed. Sending alerts.'
-        }
         success {
-            echo 'Pipeline succeeded!'
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Check logs.'
         }
     }
 }
