@@ -12,7 +12,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing HelloWorld class...'
-                bat 'java Program | grep "Hello, World!"'
+                bat 'java Program | findstr "Hello, World!"'
             }
         }
 
