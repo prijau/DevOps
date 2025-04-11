@@ -11,25 +11,38 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo 'Testing HelloWorld class...'
-                bat 'java Program | findstr "Hello from the feature branch!"'
+                echo 'Running basic test...'
+                bat 'java Program | findstr "Hello from new branch!"'
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy to Staging') {
             steps {
-                echo 'Deploying HelloWorld.java to deploy folder...'
-                bat '	if not exist deploy mkdir deploy && copy file dest\\'
+                echo 'Deploying to Staging...'
+                bat 'copy Program.class C:\\Deploy\\staging /Y'
+            }
+        }
+
+        stage('Approval') {
+            steps {
+                input "Approve deployment to Production?"
+            }
+        }
+
+        stage('Deploy to Production') {
+            steps {
+                echo 'Deploying to Production...'
+                bat 'copy Program.class C:\\Deploy\\production /Y'
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline completed successfully!'
+            echo 'Pipeline completed successfully.'
         }
         failure {
-            echo 'Pipeline failed. Check logs.'
+            echo 'Pipeline failed. Please check the logs.'
         }
     }
 }
