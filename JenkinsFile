@@ -19,7 +19,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying HelloWorld.java to deploy folder...'
-                bat 'mkdir -p deploy && cp HelloWorld.class deploy/'
+                bat '	if not exist deploy mkdir deploy && copy file dest\\'
             }
         }
     }
